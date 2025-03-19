@@ -1,8 +1,9 @@
 <?php
 class myModel extends Database
 {
-    function select_array($table='',$data='',$where = NULL){
-        $sql = "SELECT $data FROM $table";
+    protected $table;
+    function select_array($data='*',$where = NULL){
+        $sql = "SELECT $data FROM $this->table";
         if($where != NULL){
             $fields = array_keys($where);
             $fields_list = implode("",$fields);
@@ -27,12 +28,12 @@ class myModel extends Database
         }
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
-    function add($table,$data = NULL){
+    function add($data = NULL){
         $fields = array_keys($data);
         $fields_list = implode(",",$fields);
         $values = array_values($data);
         $qr = str_repeat("?,",count($fields)-1);
-        $sql = "INSERT INTO ".$table."(".$fields_list.") VALUES (${qr}?)";
+        $sql = "INSERT INTO ".$this->table."(".$fields_list.") VALUES (${qr}?)";
         echo $sql;
         $query = $this->conn->prepare($sql);
         if($query->execute($values)){
@@ -53,13 +54,13 @@ class myModel extends Database
                 );
         }
     }
-    function update($table,$data = NULL,$where = NULL){
+    function update($data = NULL,$where = NULL){
           if($data != NULL && $where != NULL){
             $fields = array_keys($data);
             $values = array_values($data);
             $where_array = array_keys($where);
             $where_value = array_values($where);
-            $sql = "UPDATE $table SET ";
+            $sql = "UPDATE $this->table SET ";
             $isFields = true;
             for($i = 0 ; $i < count($fields) ; $i++){
                 if(!$isFields){
@@ -101,8 +102,8 @@ class myModel extends Database
             }
           }
     }
-    function delete($table,$where = NULL){
-         $sql = "DELETE from $table";
+    function delete($where = NULL){
+         $sql = "DELETE from $this->table";
          if($where != NULL){
             $where_array = array_keys($where);
             $where_value = array_values($where);
@@ -136,8 +137,8 @@ class myModel extends Database
         }
 
     }
-    function select_row($table,$data="*",$where=NULL){
-        $sql = "SELECT $data FROM $table";
+    function select_row($data="*",$where=NULL){
+        $sql = "SELECT $data FROM $this->table";
         if($where != NULL){
             $where_array = array_keys($where);
             $where_value = array_values($where);

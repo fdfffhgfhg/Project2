@@ -14,11 +14,15 @@ class home extends controller
             ];
         $kq = $this->Mymodel->select_array($this->table,'*',$where);
         $this->view('masterlayout',[
+            'page' => 'user/index',
             'array' => $kq,
         ]);
     }
     public function add(){
          
 
+    }
+    function demo(){
+        
     }
 }
