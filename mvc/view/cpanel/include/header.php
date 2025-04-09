@@ -28,4 +28,6 @@
 
     <!-- Custom Theme Style -->
     <link href="public/build/css/custom.min.css" rel="stylesheet">
+    <!-- jQuery -->
+    <script src="public/vendors/jquery/dist/jquery.min.js"></script>
   </head>

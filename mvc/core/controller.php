@@ -7,4 +7,8 @@ class controller{
         require_once "./mvc/model/".$models.".php";
         return new $models;
     }
+    function helper($helper){
+        require_once "./mvc/helper/".$helper.".php";
+        return new $helper;
+    }
 }

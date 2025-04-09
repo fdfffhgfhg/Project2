@@ -9,8 +9,7 @@
       </div>
     </div>
 
-    <!-- jQuery -->
-    <script src="public/vendors/jquery/dist/jquery.min.js"></script>
+    
     <!-- Bootstrap -->
     <script src="public/vendors/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <!-- FastClick -->
@@ -49,6 +48,8 @@
 
     <!-- Custom Theme Scripts -->
     <script src="public/build/js/custom.min.js"></script>
-	
+     <!--Sweet alert-->
+     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	  <script src="public/js/myscript.js"></script>
   </body>
 </html>

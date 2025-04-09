@@ -81,12 +81,12 @@ class myModel extends Database
                 $sql .= " where ".$where_array[$i]." = ".$where_value[$i]."";
                 }
             }
-            echo $sql;
+            //echo $sql;
             $query = $this->conn->prepare($sql);
             if($query->execute($values)){
                 return json_encode(
                     array(
-                        'type' => 'successful',
+                        'type' => 'successfully',
                         'message' => 'Updated successfully',
                         'id' => $this->conn->lastInsertId(),
                     )
@@ -122,7 +122,7 @@ class myModel extends Database
          if($query->execute()){
             return json_encode(
                      array(
-                       'type' => 'successful',
+                       'type' => 'successfully',
                        'message' => 'Deleted successfully',
                        'id' => $this->conn->lastInsertId(),
                     )
@@ -157,5 +157,31 @@ class myModel extends Database
             return $query->fetch(PDO::FETCH_ASSOC);
 
         }
+    }
+    function select_max_fields($data = '' , $where = NULL){
+        if($data != NULL){
+            $sql = "SELECT MAX(".$data.") FROM $this->table";
+        }
+        if($where != NULL){
+            $where_array = array_keys($where);
+            $where_value = array_values($where);
+            $isFields_where = true;
+            $stringWhere = "where";
+            for($i = 0 ; $i < count($where_array) ; $i++){
+                if(!$isFields_where){
+                   $sql .= " and " ;
+                   $stringWhere = '';
+                }
+                $isFields_where = false;
+                $sql .= "" .$stringWhere." ".$where_array[$i]." = ?";
+            } 
+            $query = $this->conn->prepare($sql);
+            $query->execute($where_value);
+        }
+        else{
+            $query = $this->conn->prepare($sql);
+            $query->execute();
+        }
+        return $query->fetch(PDO::FETCH_ASSOC);
     }
 }

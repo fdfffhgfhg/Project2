@@ -32,9 +32,10 @@
                     <th>
                         <input type="checkbox" id="check-all" onclick=toggle(this)>
                     </th>
-                    <th class="column-title">Tên danh mục </th>
-                    <th class="column-title">Hiển thị </th>
-                    <th class="column-title">Ngày tạo</th>
+                    <th class="column-title">Ho va ten</th>
+                    <th class="column-title">Tai khoan</th>
+                    <th class="column-title">Hien thi</th>
+                    <th class="column-title">Ngay tao</th>
                     <th class="column-title no-link last"><span class="nobr">Chuc nang</span>
                     </th>
                 </tr>
@@ -44,28 +45,14 @@
                 <?php foreach($data['datas'] as $key => $val){ ?>
                     <tr class="even<?= $val['id'] ?> pointer">
                          <td class=""><input type="checkbox" name="foo" value = "<?= $val['id'] ?>"></td>
-                         <td class=""><?= $val['name'] ?></td>
+                         <td class=""><?= $val['fullname'] ?></td>
+                         <td class=""><?= $val['username'] ?></td>
                          <td class=""><input type="checkbox" onclick="checkPublish(<?= $val['id'] ?>,'publish')" data-control="<?= $data['template'] ?>" <?= $val['publish'] == 1?'checked' : '' ?> id="publish<?= $val['id'] ?>"></td>
-                         <td class=""><?= date('d/m/Y' , strtotime($val['created_at'])) ?></td>
                          <td>
                             <a href="javascript:void(0)" onclick="del(<?=$val['id']?>)" id="del<?= $val['id'] ?>" data-control="<?= $data['template'] ?>" class="btn btn-danger"><i class="fa fa-trash" ></i></a>
                             <a href="<?=base_url.$data['template'].'/'.'edit/'.$val['id']?>" class="btn btn-success"><i class="fa fa-pencil" ></i></a>
                          </td>
                     </tr>
-                    <?php if(isset($val['children']) && $val['children'] != NULL) { ?>
-                         <?php foreach($val['children'] as $key_child => $val_child){ ?>
-                            <tr class="even<?= $val_child['id'] ?> pointer">
-                               <td class=""><input type="checkbox" name="foo" value = "<?= $val_child['id'] ?>"></td>
-                               <td class="">-----------<?= $val_child['name'] ?></td>
-                               <td class=""><?= $val_child['publish'] ?></td>
-                               <td class=""><?= date('d/m/Y' , strtotime($val_child['created_at'])) ?></td>
-                                 <td>
-                                    <a href="javascript:void(0)" onclick="del(<?=$val_child['id']?>)" id="del<?=$val_child['id'] ?>" data-control="<?= $data['template'] ?>" class="btn btn-danger"><i class="fa fa-trash" ></i></a>
-                                    <a href="<?=base_url.$data['template'].'/'.'edit/'.$val_child['id']?>" class="btn btn-success"><i class="fa fa-pencil" ></i></a>
-                                 </td>
-                            </tr> 
-                         <?php }?>
-                    <?php } ?>
                 <?php } ?>
             </tbody>
             <?php }?>

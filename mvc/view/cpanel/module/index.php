@@ -32,8 +32,10 @@
                     <th>
                         <input type="checkbox" id="check-all" onclick=toggle(this)>
                     </th>
-                    <th class="column-title">Tên danh mục </th>
+                    <th class="column-title">Tên module </th>
+                    <th class="column-title">Icon</th>
                     <th class="column-title">Hiển thị </th>
+                    <th class="column-title">Sap xep </th>
                     <th class="column-title">Ngày tạo</th>
                     <th class="column-title no-link last"><span class="nobr">Chuc nang</span>
                     </th>
@@ -45,7 +47,10 @@
                     <tr class="even<?= $val['id'] ?> pointer">
                          <td class=""><input type="checkbox" name="foo" value = "<?= $val['id'] ?>"></td>
                          <td class=""><?= $val['name'] ?></td>
+                         <td class=""><i class="<?= $val['icon'] ?> fa-2x" ></i></td>
                          <td class=""><input type="checkbox" onclick="checkPublish(<?= $val['id'] ?>,'publish')" data-control="<?= $data['template'] ?>" <?= $val['publish'] == 1?'checked' : '' ?> id="publish<?= $val['id'] ?>"></td>
+                         <td class=""><input type="number" id="sort<?= $val['id']?>" data-control="<?= $data['template'] ?>" value="<?= $val['sort'] ?>" ></td>
+                         
                          <td class=""><?= date('d/m/Y' , strtotime($val['created_at'])) ?></td>
                          <td>
                             <a href="javascript:void(0)" onclick="del(<?=$val['id']?>)" id="del<?= $val['id'] ?>" data-control="<?= $data['template'] ?>" class="btn btn-danger"><i class="fa fa-trash" ></i></a>
@@ -57,7 +62,9 @@
                             <tr class="even<?= $val_child['id'] ?> pointer">
                                <td class=""><input type="checkbox" name="foo" value = "<?= $val_child['id'] ?>"></td>
                                <td class="">-----------<?= $val_child['name'] ?></td>
-                               <td class=""><?= $val_child['publish'] ?></td>
+                               <td class=""><i class="<?= $val_child['icon'] ?> fa-2x"></i></td>
+                               <td class=""><input type="checkbox" onclick="checkPublish(<?= $val_child['id'] ?>,'publish')" data-control="<?= $data['template'] ?>" <?= $val_child['publish'] == 1?'checked' : '' ?> id="publish<?= $val_child['id'] ?>"></td>
+                               <td class=""><input type="number" id="sort<?= $val_child['id']?>" data-control="<?= $data['template'] ?>" value="<?= $val_child['sort'] ?>" ></td>
                                <td class=""><?= date('d/m/Y' , strtotime($val_child['created_at'])) ?></td>
                                  <td>
                                     <a href="javascript:void(0)" onclick="del(<?=$val_child['id']?>)" id="del<?=$val_child['id'] ?>" data-control="<?= $data['template'] ?>" class="btn btn-danger"><i class="fa fa-trash" ></i></a>
