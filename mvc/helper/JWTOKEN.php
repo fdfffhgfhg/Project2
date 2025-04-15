@@ -9,7 +9,7 @@ class JWTOKEN{
          $times = json_encode(['type' => 'jwt','time' => $array['time']]);
          $Base64UrlTime = str_replace(['+','/','='],['-','_',''],base64_encode($times));
          $this->key = $array['keys'];
-         $info = json_encode($array['info']['id']);
+         $info = json_encode(['id' => $array['info']['id'] , 'username' => $array['info']['username']]);
          $Base64UrlInfo = str_replace(['+','/','='],['-','_',''],base64_encode($info));
          $hash = hash_hmac('sha256',$Base64UrlTime.'.'.$Base64UrlInfo,$this->key,false);
          $jwt = $Base64UrlTime.'.'.$Base64UrlInfo.'.'.$hash;

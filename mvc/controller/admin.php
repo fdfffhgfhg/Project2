@@ -3,8 +3,13 @@ require_once "./mvc/core/redirect.php";
 require_once "./mvc/controller/MyController.php";
 class admin extends controller
 {   
-    public $AdminModel;
-    public $MyController;
+   // load Model
+   public $AdminModel;
+   // load Mycontroller
+   public $MyController;
+   // load helper
+   public $JWTOKEN;
+   public $Authorization;
     var $template = 'admin';
     var $title = 'Tai khoan';
     public $session = 'session';
@@ -13,8 +18,28 @@ class admin extends controller
     {
         $this->AdminModel = $this->model('AdminModel');
         $this->MyController = new MyController();
+        // load helper
+        $this->Authorization = $this->helper('Authorization');
+        $this->JWTOKEN = $this->helper('JWTOKEN');
     }
     public function index(){
+        // decode token
+        if(isset($_SESSION['admin'])){
+            $verify = $this->JWTOKEN->decodeToken($_SESSION['admin'],KEYS);
+            if($verify != NULL && $verify != 0){
+                $auth = $this->Authorization->checkAuth($verify);
+                if($auth != true){
+                    $redirect = new redirect('auth/index');
+                }
+            }
+            else{
+                $redirect = new redirect('auth/index');
+            }
+        }
+        else{
+            $redirect = new redirect('auth/index');
+        }
+        //=============================
         $data_admin = $this->MyController->getIndexAdmin();
         $datas = $this->AdminModel->select_array("*");
         $data = [
@@ -27,6 +52,23 @@ class admin extends controller
         $this->view('masterlayout',$data);
     }
     public function add(){
+        // decode token
+        if(isset($_SESSION['admin'])){
+            $verify = $this->JWTOKEN->decodeToken($_SESSION['admin'],KEYS);
+            if($verify != NULL && $verify != 0){
+                $auth = $this->Authorization->checkAuth($verify);
+                if($auth != true){
+                    $redirect = new redirect('auth/index');
+                }
+            }
+            else{
+                $redirect = new redirect('auth/index');
+            }
+        }
+        else{
+            $redirect = new redirect('auth/index');
+        }
+        //=============================
         $data_admin = $this->MyController->getIndexAdmin();
         if($_SERVER['REQUEST_METHOD'] == "POST"){
             $data_post = $_POST['data_post'];
@@ -52,6 +94,23 @@ class admin extends controller
 
     }
     function edit($id){
+        // decode token
+        if(isset($_SESSION['admin'])){
+            $verify = $this->JWTOKEN->decodeToken($_SESSION['admin'],KEYS);
+            if($verify != NULL && $verify != 0){
+                $auth = $this->Authorization->checkAuth($verify);
+                if($auth != true){
+                    $redirect = new redirect('auth/index');
+                }
+            }
+            else{
+                $redirect = new redirect('auth/index');
+            }
+        }
+        else{
+            $redirect = new redirect('auth/index');
+        }
+        //=============================
         $data_admin = $this->MyController->getIndexAdmin();
         $datas = $this->AdminModel->select_row("*",['id' => $id]);
         
@@ -91,6 +150,23 @@ class admin extends controller
         }
     }
     function delAll(){
+        // decode token
+        if(isset($_SESSION['admin'])){
+            $verify = $this->JWTOKEN->decodeToken($_SESSION['admin'],KEYS);
+            if($verify != NULL && $verify != 0){
+                $auth = $this->Authorization->checkAuth($verify);
+                if($auth != true){
+                    $redirect = new redirect('auth/index');
+                }
+            }
+            else{
+                $redirect = new redirect('auth/index');
+            }
+        }
+        else{
+            $redirect = new redirect('auth/index');
+        }
+        //=============================
         $listID = $_POST['listID'];
         $arrayID = explode(',',$listID);
         foreach($arrayID as $key => $value){
@@ -104,6 +180,23 @@ class admin extends controller
         );
     }
     function checkpublish(){
+        // decode token
+        if(isset($_SESSION['admin'])){
+            $verify = $this->JWTOKEN->decodeToken($_SESSION['admin'],KEYS);
+            if($verify != NULL && $verify != 0){
+                $auth = $this->Authorization->checkAuth($verify);
+                if($auth != true){
+                    $redirect = new redirect('auth/index');
+                }
+            }
+            else{
+                $redirect = new redirect('auth/index');
+            }
+        }
+        else{
+            $redirect = new redirect('auth/index');
+        }
+        //=============================
         $id = $_POST['id'];
         $value = $_POST['value'];
         $fields = $_POST['fields'];

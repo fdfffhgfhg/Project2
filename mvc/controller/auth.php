@@ -8,6 +8,7 @@ class auth extends controller{
     public $MyController;
     // load helper
     public $JWTOKEN;
+    public $Authorization;
     const DASHBOARD = 'dashboard';
     const ACTION = 'index';
     const CONTROLLER = 'auth';
@@ -17,8 +18,20 @@ class auth extends controller{
         $this->MyController = new MyController();
         // load helper
         $this->JWTOKEN = $this->helper('JWTOKEN');
+        $this->Authorization = $this->helper('Authorization');
     }
     function index(){
+        // decode token
+        if(isset($_SESSION['admin'])){
+            $verify = $this->JWTOKEN->decodeToken($_SESSION['admin'],KEYS);
+            if($verify != NULL && $verify != 0){
+                $auth = $this->Authorization->checkAuth($verify);
+                if($auth == true){
+                    $redirect = new redirect(self::DASHBOARD.'/'.self::ACTION);
+                }
+            }
+        }
+        //=============================
         $datas = [];
         if(isset($_COOKIE['remember'])){
             $datas = json_decode($_COOKIE['remember'],true);
@@ -27,9 +40,20 @@ class auth extends controller{
         $data = [
             'datas' => $datas,
         ];
-        $this->view('login',[]);
+        $this->view('login',$data);
     }
     function login(){
+        // decode token
+        if(isset($_SESSION['admin'])){
+            $verify = $this->JWTOKEN->decodeToken($_SESSION['admin'],KEYS);
+            if($verify != NULL && $verify != 0){
+                $auth = $this->Authorization->checkAuth($verify);
+                if($auth == true){
+                    $redirect = new redirect(self::DASHBOARD.'/'.self::ACTION);
+                }
+            }
+        }
+        //=============================
         if($_SERVER['REQUEST_METHOD'] == "POST"){
             $username = $_POST['username'];
             $password = $_POST['password'];
@@ -53,7 +77,8 @@ class auth extends controller{
                     'time' => time() + 3600*24,
                     'key' => KEYS,
                     'info' => [
-                         'id' => $check['id']
+                         'id' => $check['id'],
+                         'username' => $check['username'],
                     ],
                 ];
                 $jwt = $this->JWTOKEN->CreateToken($array);
@@ -72,12 +97,23 @@ class auth extends controller{
         }
     }
     function logout(){
-        if(isset($_SESSION['admin']) && $_SESSION['admin']['logged'] == true){
-            unset($_SESSION['admin']);
-            $redirect = new redirect(self::CONTROLLER.'/'.self::ACTION);
+         // decode token
+         if(isset($_SESSION['admin'])){
+            $verify = $this->JWTOKEN->decodeToken($_SESSION['admin'],KEYS);
+            if($verify != NULL && $verify != 0){
+                $auth = $this->Authorization->checkAuth($verify);
+                if($auth != true){
+                    $redirect = new redirect('auth/index');
+                }
+            }
+            else{
+                $redirect = new redirect('auth/index');
+            }
         }
         else{
-            $redirect = new redirect(self::CONTROLLER.'/'.self::ACTION);
+            $redirect = new redirect('auth/index');
         }
+            unset($_SESSION['admin']);
+            $redirect = new redirect(self::CONTROLLER.'/'.self::ACTION);
     }
 }

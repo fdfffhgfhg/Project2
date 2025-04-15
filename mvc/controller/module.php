@@ -3,8 +3,13 @@ require_once "./mvc/core/redirect.php";
 require_once "./mvc/controller/MyController.php";
 class module extends controller
 {   
-    public $ModuleModel;
-    public $MyController;
+     // load Model
+     public $ModuleModel;
+     // load Mycontroller
+     public $MyController;
+     // load helper
+     public $JWTOKEN;
+     public $Authorization;
     var $template = 'module';
     var $title = 'Module';
     public $session = 'session';
@@ -13,8 +18,27 @@ class module extends controller
     {
         $this->ModuleModel = $this->model('ModuleModel');
         $this->MyController = new MyController();
+         // load helper
+         $this->JWTOKEN = $this->helper('JWTOKEN');
+         $this->Authorization = $this->helper('Authorization');
     }
     public function index(){
+        // decode token
+        if(isset($_SESSION['admin'])){
+            $verify = $this->JWTOKEN->decodeToken($_SESSION['admin'],KEYS);
+            if($verify != NULL && $verify != 0){
+                $auth = $this->Authorization->checkAuth($verify);
+                if($auth != true){
+                    $redirect = new redirect('auth/index');
+                }
+            }
+            else{
+                $redirect = new redirect('auth/index');
+            }
+        }
+        else{
+            $redirect = new redirect('auth/index');
+        }
         $data_admin = $this->MyController->getIndexAdmin();
         $datas = $this->ModuleModel->select_array("*" , ['parentID' => 0]);
         foreach($datas as $key => $val){
@@ -31,6 +55,23 @@ class module extends controller
         $this->view('masterlayout',$data);
     }
     public function add(){
+        // decode token
+        if(isset($_SESSION['admin'])){
+            $verify = $this->JWTOKEN->decodeToken($_SESSION['admin'],KEYS);
+            if($verify != NULL && $verify != 0){
+                $auth = $this->Authorization->checkAuth($verify);
+                if($auth != true){
+                    $redirect = new redirect('auth/index');
+                }
+            }
+            else{
+                $redirect = new redirect('auth/index');
+            }
+        }
+        else{
+            $redirect = new redirect('auth/index');
+        }
+        //==========================================
         $data_admin = $this->MyController->getIndexAdmin();
         $sort_max = $this->ModuleModel->select_max_fields('sort',NULL);
         if(isset($_POST['submit'])){
@@ -65,6 +106,23 @@ class module extends controller
 
     }
     function edit($id){
+        // decode token
+        if(isset($_SESSION['admin'])){
+            $verify = $this->JWTOKEN->decodeToken($_SESSION['admin'],KEYS);
+            if($verify != NULL && $verify != 0){
+                $auth = $this->Authorization->checkAuth($verify);
+                if($auth != true){
+                    $redirect = new redirect('auth/index');
+                }
+            }
+            else{
+                $redirect = new redirect('auth/index');
+            }
+        }
+        else{
+            $redirect = new redirect('auth/index');
+        }
+        //==============================
         $data_admin = $this->MyController->getIndexAdmin();
         $datas = $this->ModuleModel->select_row("*",['id' => $id]);
         
@@ -103,6 +161,23 @@ class module extends controller
         $this->view('masterlayout',$data);
     }
     function delete(){
+        // decode token
+        if(isset($_SESSION['admin'])){
+            $verify = $this->JWTOKEN->decodeToken($_SESSION['admin'],KEYS);
+            if($verify != NULL && $verify != 0){
+                $auth = $this->Authorization->checkAuth($verify);
+                if($auth != true){
+                    $redirect = new redirect('auth/index');
+                }
+            }
+            else{
+                $redirect = new redirect('auth/index');
+            }
+        }
+        else{
+            $redirect = new redirect('auth/index');
+        }
+        //========================
         $id = $_POST['id'];
         $result = $this->ModuleModel->delete(['id' => $id]);
         $return = json_decode($result,true);
@@ -118,6 +193,23 @@ class module extends controller
         }
     }
     function delAll(){
+        // decode token
+        if(isset($_SESSION['admin'])){
+            $verify = $this->JWTOKEN->decodeToken($_SESSION['admin'],KEYS);
+            if($verify != NULL && $verify != 0){
+                $auth = $this->Authorization->checkAuth($verify);
+                if($auth != true){
+                    $redirect = new redirect('auth/index');
+                }
+            }
+            else{
+                $redirect = new redirect('auth/index');
+            }
+        }
+        else{
+            $redirect = new redirect('auth/index');
+        }
+        //=========================
         $listID = $_POST['listID'];
         $arrayID = explode(',',$listID);
         foreach($arrayID as $key => $value){
@@ -131,6 +223,23 @@ class module extends controller
         );
     }
     function checkpublish(){
+        // decode token
+        if(isset($_SESSION['admin'])){
+            $verify = $this->JWTOKEN->decodeToken($_SESSION['admin'],KEYS);
+            if($verify != NULL && $verify != 0){
+                $auth = $this->Authorization->checkAuth($verify);
+                if($auth != true){
+                    $redirect = new redirect('auth/index');
+                }
+            }
+            else{
+                $redirect = new redirect('auth/index');
+            }
+        }
+        else{
+            $redirect = new redirect('auth/index');
+        }
+        //=============================
         $id = $_POST['id'];
         $value = $_POST['value'];
         $fields = $_POST['fields'];

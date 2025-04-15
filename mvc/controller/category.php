@@ -9,6 +9,7 @@ class category extends controller
     public $MyController;
     // load helper
     public $JWTOKEN;
+    public $Authorization;
     var $template = 'category';
     var $title = 'danh mục sản phẩm';
     public $session = 'session';
@@ -20,14 +21,24 @@ class category extends controller
         $this->MyController = new MyController();
         // load helper
         $this->JWTOKEN = $this->helper('JWTOKEN');
+        $this->Authorization = $this->helper('Authorization');
     }
     public function index(){
         // decode token
         if(isset($_SESSION['admin'])){
             $verify = $this->JWTOKEN->decodeToken($_SESSION['admin'],KEYS);
             if($verify != NULL && $verify != 0){
-               
+                $auth = $this->Authorization->checkAuth($verify);
+                if($auth != true){
+                    $redirect = new redirect('auth/index');
+                }
             }
+            else{
+                $redirect = new redirect('auth/index');
+            }
+        }
+        else{
+            $redirect = new redirect('auth/index');
         }
         $data_admin = $this->MyController->getIndexAdmin();
         $datas = $this->CategoryModel->select_array("*" , ['parentID' => 0]);
@@ -45,6 +56,22 @@ class category extends controller
         $this->view('masterlayout',$data);
     }
     public function add(){
+         // decode token
+         if(isset($_SESSION['admin'])){
+            $verify = $this->JWTOKEN->decodeToken($_SESSION['admin'],KEYS);
+            if($verify != NULL && $verify != 0){
+                $auth = $this->Authorization->checkAuth($verify);
+                if($auth != true){
+                    $redirect = new redirect('auth/index');
+                }
+            }
+            else{
+                $redirect = new redirect('auth/index');
+            }
+        }
+        else{
+            $redirect = new redirect('auth/index');
+        }
         if(isset($_POST['submit'])){
             $data_admin = $this->MyController->getIndexAdmin();
             $data_post = $_POST['data_post'];
@@ -73,6 +100,23 @@ class category extends controller
 
     }
     function edit($id){
+         // decode token
+        if(isset($_SESSION['admin'])){
+            $verify = $this->JWTOKEN->decodeToken($_SESSION['admin'],KEYS);
+            if($verify != NULL && $verify != 0){
+                $auth = $this->Authorization->checkAuth($verify);
+                if($auth != true){
+                    $redirect = new redirect('auth/index');
+                }
+            }
+            else{
+                $redirect = new redirect('auth/index');
+            }
+        }
+        else{
+            $redirect = new redirect('auth/index');
+        }
+        //=============================
         $data_admin = $this->MyController->getIndexAdmin();
         $datas = $this->CategoryModel->select_row("*",['id' => $id]);
         
@@ -107,6 +151,23 @@ class category extends controller
         $this->view('masterlayout',$data);
     }
     function delete(){
+         // decode token
+        if(isset($_SESSION['admin'])){
+            $verify = $this->JWTOKEN->decodeToken($_SESSION['admin'],KEYS);
+            if($verify != NULL && $verify != 0){
+                $auth = $this->Authorization->checkAuth($verify);
+                if($auth != true){
+                    $redirect = new redirect('auth/index');
+                }
+            }
+            else{
+                $redirect = new redirect('auth/index');
+            }
+        }
+        else{
+            $redirect = new redirect('auth/index');
+        }
+        //=============================
         $id = $_POST['id'];
         $result = $this->CategoryModel->delete(['id' => $id]);
         $return = json_decode($result,true);
@@ -122,6 +183,23 @@ class category extends controller
         }
     }
     function delAll(){
+         // decode token
+        if(isset($_SESSION['admin'])){
+            $verify = $this->JWTOKEN->decodeToken($_SESSION['admin'],KEYS);
+            if($verify != NULL && $verify != 0){
+                $auth = $this->Authorization->checkAuth($verify);
+                if($auth != true){
+                    $redirect = new redirect('auth/index');
+                }
+            }
+            else{
+                $redirect = new redirect('auth/index');
+            }
+        }
+        else{
+            $redirect = new redirect('auth/index');
+        }
+        //=============================
         $listID = $_POST['listID'];
         $arrayID = explode(',',$listID);
         foreach($arrayID as $key => $value){
@@ -135,6 +213,23 @@ class category extends controller
         );
     }
     function checkpublish(){
+         // decode token
+        if(isset($_SESSION['admin'])){
+            $verify = $this->JWTOKEN->decodeToken($_SESSION['admin'],KEYS);
+            if($verify != NULL && $verify != 0){
+                $auth = $this->Authorization->checkAuth($verify);
+                if($auth != true){
+                    $redirect = new redirect('auth/index');
+                }
+            }
+            else{
+                $redirect = new redirect('auth/index');
+            }
+        }
+        else{
+            $redirect = new redirect('auth/index');
+        }
+        //=============================
         $id = $_POST['id'];
         $value = $_POST['value'];
         $fields = $_POST['fields'];
