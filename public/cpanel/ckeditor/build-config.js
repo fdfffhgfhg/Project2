@@ -1,6 +1,6 @@
 ﻿/**
- * @license Copyright (c) 2003-2025, CKSource Holding sp. z o.o. All rights reserved.
- * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license/
+ * @license Copyright (c) 2003-2021, CKSource - Frederico Knabben. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/license
  */
 
 /**
@@ -13,10 +13,10 @@
  * (1) https://ckeditor.com/cke4/builder
  *     Visit online builder to build CKEditor from scratch.
  *
- * (2) https://ckeditor.com/cke4/builder/1dccf46d04ebbe83c7eca96fa4209c1a
+ * (2) https://ckeditor.com/cke4/builder/e431e193e5a737fc50cd68589730b6df
  *     Visit online builder to build CKEditor, starting with the same setup as before.
  *
- * (3) https://ckeditor.com/cke4/builder/download/1dccf46d04ebbe83c7eca96fa4209c1a
+ * (3) https://ckeditor.com/cke4/builder/download/e431e193e5a737fc50cd68589730b6df
  *     Straight download link to the latest version of CKEditor (Optimized) with the same setup as before.
  *
  * NOTE:
@@ -30,10 +30,8 @@ var CKBUILDER_CONFIG = {
 	ignore: [
 		'.DS_Store',
 		'.bender',
-		'.circleci',
 		'.editorconfig',
 		'.gitattributes',
-		'.github',
 		'.gitignore',
 		'.idea',
 		'.jscsrc',
@@ -42,9 +40,9 @@ var CKBUILDER_CONFIG = {
 		'.mailmap',
 		'.npm',
 		'.nvmrc',
+		'.travis.yml',
 		'bender-err.log',
 		'bender-out.log',
-		'bender-runner.config.json',
 		'bender.ci.js',
 		'bender.js',
 		'dev',
@@ -75,6 +73,7 @@ var CKBUILDER_CONFIG = {
 		'exportpdf' : 1,
 		'filebrowser' : 1,
 		'find' : 1,
+		'flash' : 1,
 		'floatingspace' : 1,
 		'font' : 1,
 		'format' : 1,

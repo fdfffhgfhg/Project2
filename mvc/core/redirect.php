@@ -1,23 +1,25 @@
 <?php
 require_once "constant.php";
-class redirect{
+class redirect
+{
     public function __construct($index = '')
     {
-        if($index != ''){
-        $index = $index == '/' ? '' : $index;
-        header("Location:".base_url.$index."");
+        if ($index != '') {
+            $index = $index == '/' ? '' : $index;
+            header("location:".base_url.$index."");
         }
-        
     }
-    public function setFlash($type,$text = ''){
-        if(isset($_SESSION[$type])){
+    public function setFlash($type, $text = '')
+    {
+        if (isset($_SESSION[$type])) {
             $message = $_SESSION[$type];
             unset($_SESSION[$type]);
             return $message;
-        }
-        else{
+        } else {
             $_SESSION[$type] = $text;
         }
-        return '';
+        echo $text;
+        die;
+        return $text;
     }
 }

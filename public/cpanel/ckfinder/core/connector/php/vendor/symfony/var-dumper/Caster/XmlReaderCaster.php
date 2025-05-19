@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the Symfony package.
  *
@@ -43,24 +42,8 @@ class XmlReaderCaster
         \XMLReader::XML_DECLARATION => 'XML_DECLARATION',
     ];
 
-    public static function castXmlReader(\XMLReader $reader, array $a, Stub $stub, bool $isNested): array
+    public static function castXmlReader(\XMLReader $reader, array $a, Stub $stub, bool $isNested)
     {
-        try {
-            $properties = [
-                'LOADDTD' => @$reader->getParserProperty(\XMLReader::LOADDTD),
-                'DEFAULTATTRS' => @$reader->getParserProperty(\XMLReader::DEFAULTATTRS),
-                'VALIDATE' => @$reader->getParserProperty(\XMLReader::VALIDATE),
-                'SUBST_ENTITIES' => @$reader->getParserProperty(\XMLReader::SUBST_ENTITIES),
-            ];
-        } catch (\Error) {
-            $properties = [
-                'LOADDTD' => false,
-                'DEFAULTATTRS' => false,
-                'VALIDATE' => false,
-                'SUBST_ENTITIES' => false,
-            ];
-        }
-
         $props = Caster::PREFIX_VIRTUAL.'parserProperties';
         $info = [
             'localName' => $reader->localName,
@@ -74,7 +57,12 @@ class XmlReaderCaster
             'value' => $reader->value,
             'namespaceURI' => $reader->namespaceURI,
             'baseURI' => $reader->baseURI ? new LinkStub($reader->baseURI) : $reader->baseURI,
-            $props => $properties,
+            $props => [
+                'LOADDTD' => $reader->getParserProperty(\XMLReader::LOADDTD),
+                'DEFAULTATTRS' => $reader->getParserProperty(\XMLReader::DEFAULTATTRS),
+                'VALIDATE' => $reader->getParserProperty(\XMLReader::VALIDATE),
+                'SUBST_ENTITIES' => $reader->getParserProperty(\XMLReader::SUBST_ENTITIES),
+            ],
         ];
 
         if ($info[$props] = Caster::filter($info[$props], Caster::EXCLUDE_EMPTY, [], $count)) {
@@ -82,7 +70,6 @@ class XmlReaderCaster
             $info[$props]->cut = $count;
         }
 
-        $a = Caster::filter($a, Caster::EXCLUDE_UNINITIALIZED, [], $count);
         $info = Caster::filter($info, Caster::EXCLUDE_EMPTY, [], $count);
         // +2 because hasValue and hasAttributes are always filtered
         $stub->cut += $count + 2;
